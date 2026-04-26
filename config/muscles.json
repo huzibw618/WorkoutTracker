@@ -1,0 +1,23 @@
+{
+    "Shoulder Press":             "Front Delts",
+    "Incline Bench Press":        "Chest",
+    "Chest Press":                "Chest",
+    "Over Hand Row":              "Back",
+    "Straight Bar Lat Prayer":    "Back",
+    "Lat Pulldown":               "Back",
+    "Chest Supported Row":        "Back",
+    "Lateral Pull Around":        "Back",
+    "Tricep Pushdown":            "Triceps",
+    "Overhead Tricep Extension":  "Triceps",
+    "Single Arm Tricep Kickback": "Triceps",
+    "Hammer Curl":                "Biceps",
+    "Preacher Curl":              "Biceps",
+    "Cable Curl":                 "Biceps",
+    "Lateral Raise (Cable)":      "Side Delts",
+    "Lateral Raise (Dumbbell)":   "Side Delts",
+    "Cable Fly":                  "Chest",
+    "Face Pull":                  "Rear Delts",
+    "Leg Extension":              "Quads",
+    "Leg Curl":                   "Hamstrings",
+    "Leg Press":                  "Quads"
+}

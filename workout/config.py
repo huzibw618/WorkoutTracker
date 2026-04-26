@@ -1,0 +1,5 @@
+MD_PATH = "data/Workouts/Workouts.md"
+WEIGHT_MD = "data/Weight/Weight.md"
+MUSCLE_DIAGRAMS_PATH = "config/muscle_diagrams.json"
+WORKOUTS_CSV = "Workouts.csv"
+WEIGHT_CSV = "Weight.csv"

@@ -1,0 +1,23 @@
+{
+    "Shoulder Press":              "assets/front_delt.png",
+    "Incline Bench Press":         "assets/chest.png",
+    "Chest Press":                 "assets/chest.png",
+    "Over Hand Row":               "assets/mid_back.png",
+    "Straight Bar Lat Prayer":     "assets/lats.png",
+    "Lat Pulldown":                "assets/lats.png",
+    "Chest Supported Row":         "assets/mid_back.png",
+    "Lateral Pull Around":         "assets/lats.png",
+    "Tricep Pushdown":             "assets/triceps.png",
+    "Overhead Tricep Extension":   "assets/triceps.png",
+    "Single Arm Tricep Kickback":  "assets/triceps.png",
+    "Hammer Curl":                 "assets/brach.png",
+    "Preacher Curl":               "assets/biceps.png",
+    "Cable Curl":                  "assets/biceps.png",
+    "Lateral Raise (Cable)":       "assets/side_delt.png",
+    "Lateral Raise (Dumbbell)":    "assets/side_delt.png",
+    "Cable Fly":                   "assets/chest.png",
+    "Face Pull":                   "assets/rear_delt.png",
+    "Leg Extension":               "assets/quad.png",
+    "Leg Curl":                    "assets/hamstrings.png",
+    "Leg Press":                   "assets/quad.png"
+}

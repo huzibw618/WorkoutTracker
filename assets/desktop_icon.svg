@@ -1,0 +1,26 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF512F" />
+      <stop offset="100%" stop-color="#DD2476" />
+    </linearGradient>
+    <linearGradient id="chart" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F8FAFC" />
+    </linearGradient>
+    <linearGradient id="chartGlow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.3)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.1)" />
+    </linearGradient>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bg)" />
+
+  <g opacity="0.95">
+      <rect x="152" y="240" width="208" height="32" rx="8" fill="#111827" />
+      <rect x="136" y="176" width="32" height="160" rx="12" fill="#1F2937" />
+      <rect x="344" y="176" width="32" height="160" rx="12" fill="#1F2937" />
+      <rect x="96" y="200" width="32" height="112" rx="10" fill="#374151" />
+      <rect x="384" y="200" width="32" height="112" rx="10" fill="#374151" />
+  </g>
+</svg>

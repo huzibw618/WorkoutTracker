@@ -7,7 +7,7 @@ from workout.parser import parseMD, parseWeightMD
 from workout.storage import loadCSV, writeCSV
 from workout.plots import TEXT
 from workout.ui import CSS, kpi
-from workout.views import overview, exercise, progress, muscles, body
+from workout.views import overview, exercise, progress, muscles, body, adherence
 
 with open(MUSCLE_DIAGRAMS_PATH) as f:
     MUSCLE_DIAGRAM = json.load(f)
@@ -56,8 +56,8 @@ c4.markdown(kpi(len(filtered), "Total Sets"), unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab_overview, tab_exercise, tab_progress, tab_muscle, tab_body = st.tabs(
-    ["📊  Overview", "🔍  Exercise", "🏆  Progress", "💪 Muscles", "⚖️  Body Metrics"]
+tab_overview, tab_exercise, tab_progress, tab_muscle, tab_body, tab_adherence = st.tabs(
+    ["📊  Overview", "🔍  Exercise", "🏆  Progress", "💪 Muscles", "⚖️  Body Metrics", "📅  Adherence"]
 )
 
 with tab_overview:
@@ -74,3 +74,6 @@ with tab_muscle:
 
 with tab_body:
     body.render(weight_df)
+
+with tab_adherence:
+    adherence.render(df)

@@ -270,6 +270,47 @@ def body_weight_chart(data: pd.DataFrame) -> go.Figure:
     return fig
 
 
+def adherence_chart(planned: list, actual_dates: set) -> go.Figure:
+    """Planned workout days coloured by completion — one marker per planned date."""
+    today = pd.Timestamp.now().normalize()
+    MISSED = '#e07b39'
+    UPCOMING = GRID
+
+    groups = {"Completed": ([], ACCENT), "Missed": ([], MISSED), "Upcoming": ([], UPCOMING)}
+
+    for d in planned:
+        if d in actual_dates:
+            groups["Completed"][0].append(d)
+        elif d < today:
+            groups["Missed"][0].append(d)
+        else:
+            groups["Upcoming"][0].append(d)
+
+    fig = go.Figure()
+    for label, (dates, color) in groups.items():
+        if dates:
+            fig.add_trace(go.Scatter(
+                x=dates,
+                y=[d.strftime("%a") for d in dates],
+                mode="markers",
+                marker=dict(size=20, color=color, line=dict(color="white", width=1.5)),
+                name=label,
+                hovertemplate="%{x|%A, %d %b %Y}<br>" + label + "<extra></extra>",
+            ))
+
+    fig.update_layout(
+        paper_bgcolor=BG, plot_bgcolor=PANEL,
+        font=dict(color=TEXT),
+        xaxis=dict(showgrid=True, gridcolor=GRID, zeroline=False, tickfont=dict(color=SUBTEXT), tickformat="%d %b"),
+        yaxis=dict(showgrid=False, zeroline=False, tickfont=dict(color=TEXT),
+                   categoryorder="array", categoryarray=["Sun", "Sat", "Fri", "Thu", "Wed", "Tue", "Mon"]),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color=TEXT)),
+        margin=dict(l=60, r=30, t=40, b=40),
+        height=320,
+    )
+    return fig
+
+
 def overview_volume(data: pd.DataFrame) -> go.Figure:
     """Total volume per session for every exercise, faceted grid."""
     daily_vol = data.groupby(['date', 'exercise'])['volume'].sum().reset_index()

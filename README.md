@@ -9,24 +9,32 @@ A personal fitness dashboard built with Streamlit. Syncs workout and body weight
 
 ---
 
-## Features
+## Screenshots
 
 ### Overview
-A high-level snapshot of your training. Shows the last session's exercises and sets, a calendar heatmap of training frequency by day of week, and faceted grids of max weight and volume trends across all exercises.
+Last session log, training frequency heatmap, and weight/volume grids across all exercises.
+
+![Overview](assets/screenshots/overview.png)
 
 ### Exercise
-Drill into any individual exercise. Displays a three-panel chart — max weight, total volume, and estimated 1-rep max (e1RM) over time — alongside a full session log filtered to that movement.
+Drill into any movement — max weight, volume, and e1RM trends over time.
 
-> e1RM is calculated using the Epley formula: `weight × (1 + reps / 30)`
+![Exercise](assets/screenshots/exercise.png)
 
 ### Progress
-Your personal records at a glance. A horizontal bar chart of max weight per exercise, top 10 best volume sessions, and a cumulative volume trend over the selected date range.
+Personal records, best volume sessions, and cumulative volume trend.
+
+![Progress](assets/screenshots/progress.png)
 
 ### Muscles
-Filter by muscle group and see every exercise that targets it, weekly set counts, average volume per session, and an anatomical diagram highlighting the relevant muscle.
+Filter by muscle group — sets per week, average volume, and exercise breakdown.
+
+![Muscles](assets/screenshots/muscles.png)
 
 ### Body Metrics
-Body weight tracking over time. Plots weekly averages, shows total change, and logs every weigh-in entry in a clean table.
+Body weight over time with weekly averages and total change.
+
+![Body Metrics](assets/screenshots/body.png)
 
 ---
 
@@ -80,42 +88,58 @@ Body weight tracking over time. Plots weekly averages, shows total change, and l
 ### 2. Clone the repo
 
 ```bash
-git clone https://github.com/hwasim6/workout-tracker.git
-cd workout-tracker
+git clone https://github.com/huzibw618/WorkoutTracker.git
+cd WorkoutTracker
 ```
 
 ### 3. Set up Google Drive credentials
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
-2. Create an OAuth 2.0 Client ID (Desktop app)
-3. Download the JSON and save it as `credentials.json` in the project root
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → **APIs & Services** → **Credentials**
+2. Click **Create Credentials** → **OAuth 2.0 Client ID** → Application type: **Desktop app**
+3. Download the JSON file and save it as `credentials.json` in the project root
 
-Use `credentials.example.json` as a reference for the expected format.
+Use `credentials.example.json` as a reference for the expected structure.
 
-### 4. Prepare your workout data on Google Drive
+### 4. Prepare your data files on Google Drive
 
-The app expects two folders in your Drive root:
+The app looks for **one folder** in your Drive root named exactly **`Workouts`**, containing two ZIP files:
 
-**`Workouts/Workouts.md`** — one entry per session:
 ```
-Month Day
-Exercise: weight1,weight2;unit;reps1,reps2
+Google Drive/
+└── Workouts/
+    ├── Workout        ← ZIP containing Workouts/Workouts.md
+    └── Weight         ← ZIP containing Weight/Weight.md
 ```
-Example:
+
+> The folder name must be `Workouts`, the ZIP files must be named `Workout` and `Weight` (no extension).
+
+**Inside `Workout.zip`** — path must be `Workouts/Workouts.md`:
+
 ```
 April 20
 BP: 60,70,80;kg;10,8,6
 SP: 40,45;kg;10,8
+LPD: 50,60;kg;10,8
+
+April 22
+SQ: 80,90,100;kg;8,6,5
 ```
 
-**`Weight/Weight.md`** — a markdown table:
+Each session starts with `Month Day` on its own line, followed by one exercise per line in the format:
+```
+SHORTHAND: weight1,weight2,...;unit;reps1,reps2,...
+```
+
+Units are `kg` or `lbs`. Shorthands are defined in `config/exercises.json` — for example `BP` → Bench Press, `SP` → Shoulder Press, `LPD` → Lat Pulldown.
+
+**Inside `Weight.zip`** — path must be `Weight/Weight.md`:
+
 ```
 | Date       | Weight | Unit |
 |------------|--------|------|
-| 2026-04-20 | 78.5   | kg   |
+| 2026-04-20 | 84.3   | kg   |
+| 2026-04-19 | 84.0   | kg   |
 ```
-
-Exercise shorthands are defined in `config/exercises.json` (e.g. `BP` → Bench Press, `SP` → Shoulder Press).
 
 ### 5. Run
 
@@ -124,11 +148,12 @@ Exercise shorthands are defined in `config/exercises.json` (e.g. `BP` → Bench 
 ```
 
 Or directly:
+
 ```bash
 uv run streamlit run dashboard.py
 ```
 
-On first run, a browser window will open for Google OAuth consent. After approval, a `token.json` is saved locally and reused for all future syncs — you won't be prompted again.
+On first run a browser window opens for Google OAuth consent. After approval, `token.json` is saved locally — you won't be prompted again.
 
 The app opens at **http://localhost:8501**.
 
@@ -137,15 +162,20 @@ The app opens at **http://localhost:8501**.
 ## Data Flow
 
 ```
-Google Drive (Workouts.md, Weight.md)
-        ↓  gdrive.py
-  Raw Markdown Files
-        ↓  parser.py
-  Structured DataFrames
-        ↓  storage.py
-  CSV Cache + Derived Columns (volume, e1RM, weight_kg)
-        ↓  plots.py + views/
-  Streamlit Dashboard
+Google Drive
+└── Workouts/ (folder)
+    ├── Workout (zip)  →  data/Workouts/Workouts.md
+    └── Weight  (zip)  →  data/Weight/Weight.md
+                                  ↓
+                            parser.py
+                                  ↓
+                     Structured DataFrames
+                                  ↓
+              storage.py — CSV cache + volume / e1RM columns
+                                  ↓
+                       plots.py + views/
+                                  ↓
+                      Streamlit Dashboard
 ```
 
 ---
@@ -154,7 +184,7 @@ Google Drive (Workouts.md, Weight.md)
 
 | File | Purpose |
 |---|---|
-| `credentials.json` | OAuth client secrets — **never commit** |
-| `token.json` | Auto-generated OAuth token — **never commit** |
-| `config/exercises.json` | Map shorthand codes to full exercise names |
-| `config/muscles.json` | Map exercises to muscle groups |
+| `credentials.json` | OAuth client secrets — **never commit**, see `credentials.example.json` |
+| `token.json` | Auto-generated on first login — never commit |
+| `config/exercises.json` | Maps shorthand codes to full exercise names |
+| `config/muscles.json` | Maps exercises to muscle groups |

@@ -2,6 +2,7 @@ import io
 import os
 import zipfile
 
+from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -21,8 +22,11 @@ class GdriveHandler():
         if os.path.exists("token.json"):
             creds = Credentials.from_authorized_user_file("token.json", self.scope)
         if not creds or not creds.valid:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", self.scope)
-            creds = flow.run_local_server(port=0)
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", self.scope)
+                creds = flow.run_local_server(port=0)
             with open("token.json", "w") as f:
                 f.write(creds.to_json())
         return creds
